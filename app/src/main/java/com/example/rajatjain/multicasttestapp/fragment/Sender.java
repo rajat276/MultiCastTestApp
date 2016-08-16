@@ -1,9 +1,12 @@
 package com.example.rajatjain.multicasttestapp.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +21,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
-public class Sender extends Fragment implements View.OnClickListener {
+public class Sender extends Fragment implements View.OnClickListener{
 
     Button packet50, packet100, packet500;
     TextView stats;
@@ -35,6 +38,8 @@ public class Sender extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        /*StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);*/
         view=inflater.inflate(R.layout.fragment_sender, container, false);
         packet50 = (Button) view.findViewById(R.id.packet50);
         packet100 = (Button) view.findViewById(R.id.packet100);
@@ -61,16 +66,44 @@ public class Sender extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.packet50:
-                SendPackets(50);
+              /*  AsyncTask.execute(new Runnable() {*/
+
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+                        SendPackets(50);
+
+                        return;
+                    }
+                });
+
                 break;
             case R.id.packet100:
-                SendPackets(100);
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+                        SendPackets(100);
+
+                        return;
+                    }
+                });
                 break;
             case R.id.packet500:
-                SendPackets(500);
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+                        SendPackets(500);
+                        return;
+                    }
+                });
                 break;
         }
     }
+
+
     private void SendPackets(int i) {
         Context c= view.getContext();
         takeWifi(c,true);
@@ -96,8 +129,15 @@ public class Sender extends Fragment implements View.OnClickListener {
                 s.send(hi);
 
                 //Toast.makeText(rootView.getContext(),"Sent: "+ msg, LENGTH_SHORT).show();
+                final String finalMsg = msg;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        stats.setText("Sending: "+ finalMsg);
 
-                stats.setText("Sending: "+ msg);
+                    }
+                });
+                //
                 Log.d("Kush","Sending" + msg);
                 if (count == i) {
                     s.leaveGroup(group);

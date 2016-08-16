@@ -1,4 +1,2 @@
 # MultiCastTestApp
-These app is more of a sending and recieving Multicast packages between pc and android phone:android and android.
-The work is still in progress, also there is extra code needed for connecting pc and android.
-This app won't run on few routhers with multicast disabled, for those routher you have to enable multicast.
+This app is being made to test multicast connectivity issues between different node devices like an android phone and laptops and network devices specifically routers. Our app assumes laptop to be as a perfect receiver and sender as a node device. Inaccuracies on the router side in terms of delay in routing packets are accounted for. The primary aim, however is to test multicast issues that exist in Android phones.

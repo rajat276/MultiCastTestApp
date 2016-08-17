@@ -3,6 +3,7 @@ package com.example.rajatjain.multicasttestapp.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
@@ -39,8 +40,7 @@ public class Reciever extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_reciever, container, false);
 
@@ -68,18 +68,27 @@ public class Reciever extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        Context c = view.getContext();
-        takeWifi(c, true);
+        Log.e("clicked","clicked");
 
-        String mip = mIpAddress.getText().toString();
-        String port = mPort.getText().toString();
-        InetAddress group = null;
-        MulticastSocket socket = null;
+      final View temp=view;
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+
+
 
         try {
+            Context c = temp.getContext();
+            takeWifi(c, true);
+            String mip = mIpAddress.getText().toString();
+            String port = mPort.getText().toString();
+            InetAddress group = null;
+            MulticastSocket socket = null;
             group = InetAddress.getByName(mip);
             socket = new MulticastSocket(Integer.parseInt(port));
             socket.joinGroup(group);
+
             while (true) {
                 byte[] buf = new byte[1000];
                 DatagramPacket recv = new DatagramPacket(buf, buf.length);
@@ -87,25 +96,35 @@ public class Reciever extends Fragment implements View.OnClickListener {
                 socket.receive(recv);
                 Log.d("VIVZ", "It was recvd");
                 String received = new String(recv.getData(), 0, recv.getLength());
-                if (received == "STOP") {
-                    updatePC();
-                    updateUI(received);
+                if (received.equals("STOP")) {
+                   /* updatePC();
+                    updateUI(received);*/
                     break;
 
                 }
 
                 //Initially just for simplicity
-                updatePC();
-                updateUI(received);
-            }
+                final String tempString=received;
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updatePC();
+                        updateUI(tempString);
+                    }
+                });
+
+           }
             takeWifi(c, false);
         } catch (Exception e) {
             e.printStackTrace();
             Log.d("VIVZ", String.valueOf(e));
         }
 
-
+                return;
+            }
+        });
     }
+
     public void updateUI(String recvd) {
 
         packetstatus.setText("Packet Received: " + packetcount);

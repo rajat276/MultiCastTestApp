@@ -98,10 +98,10 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                 DebugText.setText(str);
                 int port=Integer.parseInt(ipport.getText().toString());
                 Client_ob ob3=new Client_ob(ipadd.getText().toString(),port,MainActivity2.this);
-                ob3.Send("req");
-                //ob3.recieve();
-                //String recv ="string recieved: " +ob3.recieve() + "\n" + DebugText.getText().toString();
-                //DebugText.setText(recv);
+                ob3.Send("test-connection");
+                ob3.recieve();
+                String recv ="string recieved: " + "\n" + DebugText.getText().toString();
+                DebugText.setText(recv);
                 break;
             case R.id.bsendtestcase:
                 String str2 = "Sending test case data" + "\n" + DebugText.getText().toString();
@@ -109,7 +109,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                 int port2=Integer.parseInt(ipport.getText().toString());
                 Client_ob ob4=new Client_ob(ipadd.getText().toString(),port2,MainActivity2.this);
                 int test=testnumber+1;
-                ob4.Send(test+"."+isServer);//sender:1 reciver=0
+                ob4.Send("run-test "+test+"."+isServer);//sender:1 reciver=0
                 String send = test+"."+isServer + "\n" + DebugText.getText().toString();
                 DebugText.setText("String sent: "+send);
                 break;

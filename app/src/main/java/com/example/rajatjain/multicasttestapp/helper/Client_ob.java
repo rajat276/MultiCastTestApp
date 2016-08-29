@@ -84,7 +84,7 @@ public class Client_ob {
         });
 
     }
-/*    public void recieve(){
+    public void recieve(){
         final String[] str = {"null"};
         AsyncTask.execute(new Runnable() {
             @Override
@@ -112,7 +112,7 @@ public class Client_ob {
             }
         });
 
-    }*/
+    }
     /*class ClientThread implements Runnable {
 
         @Override

@@ -131,6 +131,7 @@ public class Reciever extends Fragment implements View.OnClickListener {
         receivedstatus.setText("Received " + recvd);
         if (recvd == "STOP")
             packetstatus.setText("Tune out. Final Packet Received: " + packetcount);
+        Log.e("just for change","none");
     }
 
     public void updatePC() {

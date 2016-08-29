@@ -143,7 +143,7 @@ public class Sender extends Fragment implements View.OnClickListener{
                     s.leaveGroup(group);
                     break;
                 }
-                Thread.sleep(1000);
+                Thread.sleep(50000/i);
             }
         }
         catch(Exception e)

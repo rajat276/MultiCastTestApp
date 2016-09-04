@@ -94,11 +94,12 @@ public class Client_ob {
                 try {
                     DataInputStream din=new DataInputStream(socket.getInputStream());
                     final String str=din.readUTF();
+                    Log.e("str",str);
                     if(str.equals("ack")){
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                communicate.respond(str);
+                                communicate.respond("string recieved: "+str);
                             }
                         });
                     }

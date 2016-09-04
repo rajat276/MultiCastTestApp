@@ -100,8 +100,8 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                 Client_ob ob3=new Client_ob(ipadd.getText().toString(),port,MainActivity2.this);
                 ob3.Send("test-connection");
                 ob3.recieve();
-                String recv ="string recieved: " + "\n" + DebugText.getText().toString();
-                DebugText.setText(recv);
+                //String recv ="string recieved: " + "\n" + DebugText.getText().toString();
+                //DebugText.setText(recv);
                 break;
             case R.id.bsendtestcase:
                 String str2 = "Sending test case data" + "\n" + DebugText.getText().toString();

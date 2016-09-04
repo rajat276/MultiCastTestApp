@@ -164,17 +164,17 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Send testcase"
+                    android:text="Send Data"
                     android:layout_weight="2"
-                    android:id="@+id/bsendtestcase"
+                    android:id="@+id/brun"
                     />
             </LinearLayout>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Run"
-                android:id="@+id/brun"
+                android:text="Send Testcase and Run"
+                android:id="@+id/bsendtestcase"
              />
 
         </LinearLayout>

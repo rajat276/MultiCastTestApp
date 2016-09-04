@@ -80,7 +80,9 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.brun:
-                if(isServer==1) {
+                //Reciever_ob dc= new Reciever_ob();
+                //String dat= dc.sendDataCollector();
+                /*if(isServer==1) {
                     String str = "Started as Server" + "\n" + DebugText.getText().toString();
                     DebugText.setText(str);
                     Sender_ob ob1 = new Sender_ob(this, MainActivity2.this);
@@ -91,7 +93,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                     Reciever_ob ob2 = new Reciever_ob(this, MainActivity2.this,multicastadd.getText().toString(),multicastport.getText().toString());
                     ob2.Test();
 
-                }
+                }*/
                 break;
             case R.id.btest:
                 String str = "Test connection" + "\n" + DebugText.getText().toString();
@@ -112,6 +114,27 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                 ob4.Send("run-test "+test+"."+isServer);//sender:1 reciver=0
                 String send = test+"."+isServer + "\n" + DebugText.getText().toString();
                 DebugText.setText("String sent: "+send);
+                int tp=5;
+                DebugText.setText("Going for execution in: 5 seconds ");
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(isServer==1) {
+                    String str3 = "Started as Server" + "\n" + DebugText.getText().toString();
+                    DebugText.setText(str3);
+                    Sender_ob ob1 = new Sender_ob(this, MainActivity2.this);
+                    ob1.Test(testnumber);
+                }else {
+                    String str3 = "Started as Client" + "\n" + DebugText.getText().toString();
+                    DebugText.setText(str3);
+                    Reciever_ob ob2 = new Reciever_ob(this, MainActivity2.this,multicastadd.getText().toString(),multicastport.getText().toString());
+                    ob2.Test();
+                    String dat= ob2.sendDataCollector();
+                    ob4.Send(dat + "dobo");
+
+                }
                 break;
         }
     }

@@ -27,15 +27,15 @@ public class Sender_ob {
         this.communicate=(Communicate)activity;
     }
     public void Test(final int testcase ){
-            /*AsyncTask.execute(new Runnable() {
+            AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
                 SendPackets(50*(testcase + 1));
             }
             });
-            */
-               switch (testcase) {
+
+            /*   switch (testcase) {
             case 0:
                // AsyncTask.execute(new Runnable() {
 
@@ -71,7 +71,7 @@ public class Sender_ob {
                     }
                 });
                 break;
-        }
+        }*/
 
     }
     private void SendPackets(int i) {

@@ -14,7 +14,14 @@
 
     <string-array name="Testcase_array">
         <item>50 packets 1 seconds</item>
-        <item>100 packets 0.5 seconds</item>
+        <item>100 packets 0.9 seconds</item>
+        <item>150 packets 0.8 seconds</item>
+        <item>200 packets 0.7 seconds</item>
+        <item>250 packets 0.6 seconds</item>
+        <item>300 packets 0.5 seconds</item>
+        <item>350 packets 0.4 seconds</item>
+        <item>400 packets 0.3 seconds</item>
+        <item>450 packets 0.2 seconds</item>
         <item>500 packets 0.1 seconds</item>
     </string-array>
 

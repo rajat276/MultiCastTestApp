@@ -22,6 +22,7 @@ public class Reciever_ob {
     Activity activity;
     Communicate communicate;
     String mipadd,mport;
+    String datacollector;
     int packetcount=0;
     public Reciever_ob(Context context, Activity activity,String mipadd,String mport){
         this.context=context;
@@ -29,7 +30,9 @@ public class Reciever_ob {
         this.communicate=(Communicate)activity;
         this.mipadd=mipadd;
         this.mport=mport;
+        //this.datacollector="";
     }
+
     public void Test(){
 
         AsyncTask.execute(new Runnable() {
@@ -49,13 +52,13 @@ public class Reciever_ob {
                     group = InetAddress.getByName(mip);
                     socket = new MulticastSocket(Integer.parseInt(port));
                     socket.joinGroup(group);
-
+                    String tempissue="";
                     while (true) {
                         byte[] buf = new byte[1000];
                         DatagramPacket recv = new DatagramPacket(buf, buf.length);
-                        Log.d("VIVZ", "Datagram packet created");
+                        //Log.d("VIVZ", "Datagram packet created");
                         socket.receive(recv);
-                        Log.d("VIVZ", "It was recvd");
+                        //Log.d("VIVZ", "It was recvd");
                         String received = new String(recv.getData(), 0, recv.getLength());
                         if (received.equals("STOP")) {
                    /* updatePC();
@@ -67,6 +70,7 @@ public class Reciever_ob {
 
                         //Initially just for simplicity
                         final String tempString=received;
+                        tempissue += received + ".";
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -76,15 +80,27 @@ public class Reciever_ob {
                         });
 
                     }
+                    Log.d("trial",tempissue);
+                    storeDataCollector(tempissue);
                     takeWifi(c, false);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.d("VIVZ", String.valueOf(e));
                 }
 
-                return;
+
             }
         });
+
+        return;
+    }
+    public void storeDataCollector(String string)
+    {
+        datacollector= string;
+    }
+    public String sendDataCollector()
+    {
+        return datacollector;
     }
 
     public void updateUI(String recvd) {

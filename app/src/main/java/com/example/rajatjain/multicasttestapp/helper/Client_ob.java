@@ -3,6 +3,7 @@ package com.example.rajatjain.multicasttestapp.helper;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.rajatjain.multicasttestapp.Interface.Communicate;
 
@@ -30,9 +31,9 @@ public class Client_ob {
         this.activity=activity;
         this.communicate=(Communicate)activity;
     }
-    public void Send(String str){
+    public void Send(final String str){
        // new Thread(new ClientThread()).start();
-        final String code=str;
+        //final String code=str;
 
 
         AsyncTask.execute(new Runnable() {
@@ -58,19 +59,17 @@ public class Client_ob {
                 }
 
                 try {
-
-                    String str = code;
             /*PrintWriter out = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())),
                     true);
             out.println(str);
             */
-                    Log.e("sending",code);
+                    Log.e("sending",str);
 
                     DataOutputStream dataOutputStream= new DataOutputStream(socket.getOutputStream());
                     dataOutputStream.writeUTF(str);
                     dataOutputStream.flush();
-                    socket.close();
+
                 } catch (UnknownHostException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -100,6 +99,7 @@ public class Client_ob {
                             @Override
                             public void run() {
                                 communicate.respond("string recieved: "+str);
+                                //Toast.makeText(getContext(),"Connection Established",Toast.LENGTH_SHORT);
                             }
                         });
                     }

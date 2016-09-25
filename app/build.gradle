@@ -3,13 +3,22 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
+    def Properties versionProps = new Properties()
+    def versionPropsFile = file('version.properties')
+    if(versionPropsFile.exists())
+        versionProps.load(new FileInputStream(versionPropsFile))
+    def code = (versionProps['VERSION_CODE'] ?: "0").toInteger() + 1
+    versionProps['VERSION_CODE'] = code.toString()
+    versionProps.store(versionPropsFile.newWriter(), null)
+
 
     defaultConfig {
         applicationId "com.example.rajatjain.multicasttestapp"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 1
+        versionCode code
         versionName "1.0"
+        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {
         release {

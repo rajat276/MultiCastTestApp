@@ -1,8 +1,13 @@
 package com.example.rajatjain.multicasttestapp;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,6 +24,8 @@ import com.example.rajatjain.multicasttestapp.helper.Client_ob;
 import com.example.rajatjain.multicasttestapp.helper.Reciever_ob;
 import com.example.rajatjain.multicasttestapp.helper.Sender_ob;
 
+import java.util.Date;
+
 /**
  * Created by Rajat Jain on 26-08-2016.
  */
@@ -26,11 +33,14 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
     Spinner spinner;
     int testnumber;
     ArrayAdapter<CharSequence> adapter;
-    TextView DebugText;
+    TextView DebugText,info;
     Button run,testconn,sendTestcase;
     EditText multicastadd,multicastport,ipadd,ipport;
     ToggleButton toggle;
     int isServer=0;
+    String address;
+    Date buildDate;
+    int versioncode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +60,10 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
         DebugText=(TextView)findViewById(R.id.debug_text);
+        buildDate = new Date(BuildConfig.TIMESTAMP);//build date
+        versioncode=BuildConfig.VERSION_CODE;//version code
+        info=(TextView)findViewById(R.id.tvinfo);
+        info.setText("BUILD DATE: "+buildDate+"    VERSION CODE: "+versioncode);
         run=(Button)findViewById(R.id.brun);
         testconn=(Button)findViewById(R.id.btest);
         sendTestcase=(Button)findViewById(R.id.bsendtestcase);
@@ -57,6 +71,9 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
         sendTestcase.setOnClickListener(this);
         run.setOnClickListener(this);
         DebugText.setText("on Start");
+        WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = manager.getConnectionInfo();
+        address = info.getMacAddress();//device mac
     }
 
     @Override
@@ -98,9 +115,12 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
             case R.id.btest:
                 String str = "Test connection" + "\n" + DebugText.getText().toString();
                 DebugText.setText(str);
+                Date d = new Date();
+                CharSequence s  = DateFormat.format("MMMM d, yyyy ", d.getTime());//date of request
+                String device= Build.MODEL;//device model
                 int port=Integer.parseInt(ipport.getText().toString());
                 Client_ob ob3=new Client_ob(ipadd.getText().toString(),port,MainActivity2.this);
-                ob3.Send("test-connection");
+                ob3.Send("test-connection#"+address+"#"+s+"#"+device);
                 ob3.recieve();
                 //String recv ="string recieved: " + "\n" + DebugText.getText().toString();
                 //DebugText.setText(recv);

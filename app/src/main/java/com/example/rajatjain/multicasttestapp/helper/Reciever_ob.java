@@ -81,6 +81,7 @@ public class Reciever_ob {
 
                     }
                     Log.d("trial",tempissue);
+                    communicate.excelrespond(tempissue);
                     storeDataCollector(tempissue);
                     takeWifi(c, false);
                 } catch (Exception e) {
@@ -96,6 +97,7 @@ public class Reciever_ob {
     }
     public void storeDataCollector(String string)
     {
+
         datacollector= string;
     }
     public String sendDataCollector()

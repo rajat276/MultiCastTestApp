@@ -7,4 +7,5 @@ import android.view.View;
  */
 public interface Communicate {
     public void respond(String str);
+    public void excelrespond(String str);
 }

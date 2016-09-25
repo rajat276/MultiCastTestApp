@@ -41,6 +41,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
     String address;
     Date buildDate;
     int versioncode;
+    Client_ob ob4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +96,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void excelrespond(String str) {
-
+        ob4.Send(str);
     }
 
     @Override
@@ -134,7 +135,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                 String str2 = "Sending test case data" + "\n" + DebugText.getText().toString();
                 DebugText.setText(str2);
                 int port2=Integer.parseInt(ipport.getText().toString());
-                Client_ob ob4=new Client_ob(ipadd.getText().toString(),port2,MainActivity2.this);
+                ob4=new Client_ob(ipadd.getText().toString(),port2,MainActivity2.this);
                 int test=testnumber+1;
                 ob4.Send("run-test "+test+"."+isServer);//sender:1 reciver=0
                 String send = test+"."+isServer + "\n" + DebugText.getText().toString();
@@ -156,8 +157,6 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
                     DebugText.setText(str3);
                     Reciever_ob ob2 = new Reciever_ob(this, MainActivity2.this,multicastadd.getText().toString(),multicastport.getText().toString());
                     ob2.Test();
-                    String dat= ob2.sendDataCollector();
-                    ob4.Send(dat + "dobo");
 
                 }
                 break;

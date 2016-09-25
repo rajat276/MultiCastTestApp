@@ -82,7 +82,6 @@ public class Reciever_ob {
                     }
                     Log.d("trial",tempissue);
                     communicate.excelrespond(tempissue);
-                    storeDataCollector(tempissue);
                     takeWifi(c, false);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -94,15 +93,6 @@ public class Reciever_ob {
         });
 
         return;
-    }
-    public void storeDataCollector(String string)
-    {
-
-        datacollector= string;
-    }
-    public String sendDataCollector()
-    {
-        return datacollector;
     }
 
     public void updateUI(String recvd) {

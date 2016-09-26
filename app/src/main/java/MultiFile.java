@@ -1,4 +1,4 @@
-import java.net.*;  
+import java.net.*;
 import java.io.*;
 import java.util.*;
 import java.lang.*;
@@ -18,18 +18,18 @@ public class MultiFile implements Runnable{
 	}
 
 	public void run()
-	{   
+	{
 		try{
 			//  System.out.println("Waiting for TCP Test Connection ping\n");
 
-			ServerSocket ss=new ServerSocket(3334);  
+			ServerSocket ss=new ServerSocket(3334);
 			while(true){
 				System.out.println("Waiting for TCP Test Connection ping");
-				String str="",str2="";  
-				Socket socket=ss.accept();  
-				DataInputStream din=new DataInputStream(socket.getInputStream());  
-				DataOutputStream dout=new DataOutputStream(socket.getOutputStream());  
-				
+				String str="",str2="";
+				Socket socket=ss.accept();
+				DataInputStream din=new DataInputStream(socket.getInputStream());
+				DataOutputStream dout=new DataOutputStream(socket.getOutputStream());
+
 				//Test case number, sender->0 receiver->1, manual test case info(optional) 
 
 				str=din.readUTF();
@@ -42,10 +42,10 @@ public class MultiFile implements Runnable{
 					dout.writeUTF(str2);
 					dout.flush();
 					continue;
-				} 
+				}
 				//The run-test part runs when send testcase and run button is pressed on the app
 				else if(str.startsWith("run-test")){
-				    //Parse the testcase metadata
+					//Parse the testcase metadata
 					String testLabels[] = str.split(" ");
 					double ins= Double.parseDouble(testLabels[1]);
 					int testcaseno= (int)ins;
@@ -55,11 +55,17 @@ public class MultiFile implements Runnable{
 					System.out.println("Test Case Information:\n1. Test case number: " + testcaseno + "\n2. Number of Packets: " + arr[testcaseno-1][0] + "\n3. Time Interval between packets: " + arr
 							[testcaseno-1][1] + "\n4. Test Case Flavor: " + tF + "\nPress any button to start: ");
 					executeTest(testcaseno, testFlavor);
-					System.out.println("Jay Ambe Maa!");
-					String allinfo= din.readUTF();
+					din.close();
+					socket.close();
+					//System.out.println("Jay Ambe Maa!");
+
+					Socket cket=ss.accept();
+					DataInputStream dhin=new DataInputStream(cket.getInputStream());
+
+					String allinfo= dhin.readUTF();
 					System.out.println(allinfo + "bulbul");
-					din.close();  
-					socket.close(); 
+					dhin.close();
+					cket.close();
 					Thread.currentThread().setName("tester");
 					continue;
 				} else if(str.startsWith("terminate")){
@@ -83,8 +89,8 @@ public class MultiFile implements Runnable{
 			System.out.println("Going for execution in: \n5");
 			while(tp>0)
 			{
-			    Thread.sleep(1000);
-			    System.out.println(--tp);    
+				Thread.sleep(1000);
+				System.out.println(--tp);
 			}
 			if(sendOrReceive==0)
 			{
@@ -99,42 +105,42 @@ public class MultiFile implements Runnable{
 			MulticastSocket s = new MulticastSocket(6789);
 			s.joinGroup(group);
 			if((Thread.currentThread().getName()).equals("sender"))
-			{    
-				
-                String msg="";
-                int count= 0;
+			{
+
+				String msg="";
+				int count= 0;
 				while(true)
-                {   Date date= new Date();
-                    long t= date.getTime();
-                    count+=1;
-                    msg= t + "," + count;
-                    if(count==(int)arr[testcaseno-1][0])
-                        msg= "STOP";
-                DatagramPacket hi = new DatagramPacket(msg.getBytes(), msg.length(),group, 6789);
-                s.send(hi);
-                System.out.println(msg);
+				{   Date date= new Date();
+					long t= date.getTime();
+					count+=1;
+					msg= t + "," + count;
+					if(count==(int)arr[testcaseno-1][0])
+						msg= "STOP";
+					DatagramPacket hi = new DatagramPacket(msg.getBytes(), msg.length(),group, 6789);
+					s.send(hi);
+					System.out.println(msg);
                 /*if((msg.toLowerCase()).equals("stop"))
                 {
                 s.leaveGroup(group);
                 break;
             }
             */
-                if(count== (int)arr[testcaseno-1][0])
-                {
-                    s.leaveGroup(group);
-                    break;
-                }
-                Thread.sleep((int)arr[testcaseno-1][1]);
-                }
-            }
-				
+					if(count== (int)arr[testcaseno-1][0])
+					{
+						s.leaveGroup(group);
+						break;
+					}
+					Thread.sleep((int)arr[testcaseno-1][1]);
+				}
+			}
+
 			else
 			{
-				//Dlink 605L   
-				 String csvFile = "/home/kush/Desktop/DimaagKharab.csv";
-                 FileWriter writer = new FileWriter(csvFile); 
-                 
-                 writer.append("Packet Time, Packet Count, System Time, Delay(ms), Delay(sec)\n");
+				//Dlink 605L
+				String csvFile = "/home/kush/Desktop/DimaagKharab.csv";
+				FileWriter writer = new FileWriter(csvFile);
+
+				writer.append("Packet Time, Packet Count, System Time, Delay(ms), Delay(sec)\n");
 				while(true)
 				{
 					byte[] buf = new byte[1000];
@@ -142,10 +148,10 @@ public class MultiFile implements Runnable{
 					s.receive(recv);
 					String received = new String(recv.getData(), 0, recv.getLength());
 					Date date= new Date();
-                    long t= date.getTime();
+					long t= date.getTime();
 					String msg= received + "," + t +"\n";
-                    writer.append(msg);    
-        
+					writer.append(msg);
+
 					if(!((received.toLowerCase()).equals("stop")))
 						System.out.println(msg);
 
@@ -154,11 +160,11 @@ public class MultiFile implements Runnable{
 						s.leaveGroup(group);
 						break;
 					}
-					
+
 
 				}
 				writer.flush();
-                writer.close();
+				writer.close();
 
 
 			}
@@ -171,10 +177,9 @@ public class MultiFile implements Runnable{
 	}
 	public static void main(String[] args)
 	{   //TODO: This is the call to the autopopulate function to populate the array
-		autopopulate(50,1000);    
+		autopopulate(50,1000);
 		Thread sender= new Thread(new MultiFile());
 		sender.start();
 
 	}
 }
-

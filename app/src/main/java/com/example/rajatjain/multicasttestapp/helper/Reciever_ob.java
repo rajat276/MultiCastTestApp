@@ -69,8 +69,9 @@ public class Reciever_ob {
                         }
 
                         //Initially just for simplicity
+                        long unixTime = System.currentTimeMillis();
                         final String tempString=received;
-                        tempissue += received + ".";
+                        tempissue += received + "," + unixTime + ".";
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

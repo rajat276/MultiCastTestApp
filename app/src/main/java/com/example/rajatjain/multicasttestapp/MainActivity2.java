@@ -65,7 +65,7 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
         versioncode=BuildConfig.VERSION_CODE;//version code
         info=(TextView)findViewById(R.id.tvinfo);
         info.setText("BUILD DATE: "+buildDate+"    VERSION CODE: "+versioncode);
-        run=(Button)findViewById(R.id.brun);
+        run=(Button)findViewById(R.id.bterminate);
         testconn=(Button)findViewById(R.id.btest);
         sendTestcase=(Button)findViewById(R.id.bsendtestcase);
         testconn.setOnClickListener(this);
@@ -102,21 +102,8 @@ public class MainActivity2 extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.brun:
-                //Reciever_ob dc= new Reciever_ob();
-                //String dat= dc.sendDataCollector();
-                /*if(isServer==1) {
-                    String str = "Started as Server" + "\n" + DebugText.getText().toString();
-                    DebugText.setText(str);
-                    Sender_ob ob1 = new Sender_ob(this, MainActivity2.this);
-                    ob1.Test(testnumber);
-                }else {
-                    String str = "Started as Client" + "\n" + DebugText.getText().toString();
-                    DebugText.setText(str);
-                    Reciever_ob ob2 = new Reciever_ob(this, MainActivity2.this,multicastadd.getText().toString(),multicastport.getText().toString());
-                    ob2.Test();
-
-                }*/
+            case R.id.bterminate:
+                ob4.Send("terminate");
                 break;
             case R.id.btest:
                 String str = "Test connection" + "\n" + DebugText.getText().toString();

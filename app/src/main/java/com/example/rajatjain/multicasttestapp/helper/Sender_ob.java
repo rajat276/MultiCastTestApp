@@ -31,7 +31,12 @@ public class Sender_ob {
             @Override
             public void run() {
                 android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-                SendPackets(50*(testcase + 1));
+                if(testcase==0)
+                    SendPackets(200, (float) 0.5); //200*0.5 = 100 Seconds
+                else if(testcase==1)
+                    SendPackets(1000, (float) 0.1); //1000*0.1= 100 Seconds
+                else
+                    SendPackets(2000, (float) 0.01); //2000*0.01= 20 Seconds but 2000 packets already reached
             }
             });
 
@@ -74,7 +79,7 @@ public class Sender_ob {
         }*/
 
     }
-    private void SendPackets(int i) {
+    private void SendPackets(int packets, float timeInterval) {
         Context c= context;
         takeWifi(c,true);
         try {
@@ -85,7 +90,7 @@ public class Sender_ob {
             //String stem = "BITS Test Packet- ";
             String msg;
             Log.d("Kush","Before while loop");
-            int t=i;
+            int t=packets;
             while (true) {
                 //Scanner st= new Scanner(System.in);
                 //msg= st.nextLine();
@@ -93,7 +98,7 @@ public class Sender_ob {
 
                 count += 1;
                 msg = unixTime + "," + count;
-                if (count == i)
+                if (count == packets)
                     msg = "STOP";
                 DatagramPacket hi = new DatagramPacket(msg.getBytes(), msg.length(), group, 6789);
                 s.send(hi);
@@ -111,11 +116,11 @@ public class Sender_ob {
                 });
 
                 Log.d("Kush","Sending" + msg);
-                if (count == i) {
+                if (count == packets) {
                     s.leaveGroup(group);
                     break;
                 }
-                Thread.sleep(50000/i);
+                Thread.sleep((long) (timeInterval*1000));
             }
         }
         catch(Exception e)

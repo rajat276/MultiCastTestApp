@@ -13,12 +13,23 @@ public class MultiFile implements Runnable {
     //TODO :This is the method to autopopulate the test case 2D array as declared above
     public static void autopopulate(int minPackets, float maxInterval) //interval in milliseconds
     {
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             arr[i][0] = minPackets;
             arr[i][1] = maxInterval;
             minPackets += 50;
             maxInterval -= 100;
         }
+        */
+        //This test should run for 100 seconds
+        arr[0][0]= 200;
+        arr[0][1]= (float) 0.5;
+
+        arr[1][0]= 1000;
+        arr[1][1]= (float) 0.1;
+
+        arr[2][0]= 2000;
+        arr[2][1]= (float) 0.01;
+
     }
 
     public void run() {
@@ -142,7 +153,7 @@ public class MultiFile implements Runnable {
                         s.leaveGroup(group);
                         break;
                     }
-                    Thread.sleep((int) arr[testcaseno - 1][1]);
+                    Thread.sleep((long) (1000*arr[testcaseno - 1][1]));
                 }
             } else {
                 //Dlink 605L
